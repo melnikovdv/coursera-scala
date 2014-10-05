@@ -14,7 +14,6 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class FunSetSuite extends FunSuite {
 
-
   /**
    * Link to the scaladoc - very clear and detailed tutorial of FunSuite
    *
@@ -50,8 +49,10 @@ class FunSetSuite extends FunSuite {
   
   import FunSets._
 
-  test("contains is implemented") {
+  test("contains is implemented and works") {
     assert(contains(x => true, 100))
+    assert(contains(x => x > 0, 1))
+    assert(contains(x => x < 0, -1))
   }
   
   /**
@@ -77,6 +78,10 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+
+    val s1Intersect = intersect(s1, s1)
+    val s1s2Intersect = intersect(s1, s2)
+    val s1s2Union = union(s1, s2)
   }
 
   /**
@@ -86,7 +91,7 @@ class FunSetSuite extends FunSuite {
    * Once you finish your implementation of "singletonSet", exchange the
    * function "ignore" by "test".
    */
-  ignore("singletonSet(1) contains 1") {
+  test("singletonSet(1) contains 1") {
     
     /**
      * We create a new instance of the "TestSets" trait, this gives us access
@@ -98,15 +103,77 @@ class FunSetSuite extends FunSuite {
        * the test fails. This helps identifying which assertion failed.
        */
       assert(contains(s1, 1), "Singleton")
+      assert(contains(s2, 2), "Singleton")
+
+      print("s1Intersect: ")
+      printSet(s1Intersect)
+
+      print("s1s2Intersect: ")
+      printSet(s1s2Intersect)
+
+      print("s1s2Union: ")
+      printSet(s1s2Union)
     }
   }
 
-  ignore("union contains all elements") {
+  test("union contains all elements") {
     new TestSets {
-      val s = union(s1, s2)
-      assert(contains(s, 1), "Union 1")
-      assert(contains(s, 2), "Union 2")
-      assert(!contains(s, 3), "Union 3")
+      assert(contains(s1s2Union, 1), "Union 1")
+      assert(contains(s1s2Union, 2), "Union 2")
+      assert(!contains(s1s2Union, 3), "Union 3")
+    }
+  }
+
+  test("intersects") {
+    new TestSets {
+      assert(contains(s1Intersect, 1), "intersect of same sets")
+      assert(!contains(s1Intersect, 2), "!contains intersect of same sets")
+
+      assert(!contains(s1s2Intersect, 1), "intersect of diff sets")
+      assert(!contains(s1s2Intersect, 2), "intersect of diff sets")
+    }
+  }
+
+  test("diff") {
+    new TestSets {
+      assert(contains(s1s2Union, 2), "diff")
+      val s12 = union(s1, s2)
+      val s23 = union(s2, s3)
+      val sDiff = diff(s12, s23)
+      assert(contains(sDiff, 1), "diff value")
+      assert(!contains(sDiff, 2), "same value")
+      assert(contains(sDiff, 3), "diff value")
+    }
+  }
+
+  test("filter") {
+    new TestSets {
+      assert(contains(filter(s1s2Union, x => x > 1), 2))
+      assert(!contains(filter(s1s2Union, x => x > 1), 1))
+    }
+  }
+
+  test("forall") {
+    new TestSets {
+      assert(forall(s1s2Union, x => x > 0))
+      assert(!forall(s1s2Union, x => x > 1))
+      assert(forall(s1s2Union, x => x > -1000))
+
+    }
+  }
+
+  test("exists") {
+    new TestSets {
+      assert(exists(s1s2Union, x => x > 1))
+      assert(!exists(s1s2Union, x => x > 5))
+    }
+  }
+
+  test("map") {
+    new TestSets {
+      val res = map(s1s2Union, x => x * 2)
+      assert(contains(res, 2))
+      assert(contains(res, 4))
     }
   }
 }
