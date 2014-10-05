@@ -142,8 +142,49 @@ class FunSetSuite extends FunSuite {
       val sDiff = diff(s12, s23)
       assert(contains(sDiff, 1), "diff value")
       assert(!contains(sDiff, 2), "same value")
-      assert(contains(sDiff, 3), "diff value")
+      assert(!contains(sDiff, 3), "diff value")
     }
+  }
+
+  test("diff of {1,3,4,5,7,1000} and {1,2,3,4}") {
+    val s1 = singletonSet(1)
+    val s2 = singletonSet(2)
+    val s3 = singletonSet(3)
+    val s4 = singletonSet(4)
+    val s5 = singletonSet(5)
+    val s7 = singletonSet(7)
+    val s1000 = singletonSet(1000)
+
+    val u1 = union(union(union(union(union(s1, s3), s4), s5), s7), s1000)
+    val u2 = union(union(union(s1, s2), s3), s4)
+
+    val res = diff(u1, u2)
+    printSet(res)
+    assert(!contains(res, 2))
+    assert(contains(res, 5))
+    assert(contains(res, 7))
+    assert(contains(res, 1000))
+  }
+
+  test("diff of {1,2,3,4} and {-1000,0}") {
+    val s1 = singletonSet(1)
+    val s2 = singletonSet(2)
+    val s3 = singletonSet(3)
+    val s4 = singletonSet(4)
+    val sM1000 = singletonSet(-1000)
+    val s0 = singletonSet(0)
+
+    val u1 = union(union(union(s1, s2), s3), s4)
+    val u2 = union(sM1000, s0)
+
+    val res = diff(u1, u2)
+    printSet(res)
+    assert(contains(res, 1))
+    assert(contains(res, 2))
+    assert(contains(res, 3))
+    assert(contains(res, 4))
+    assert(!contains(res, -1000))
+    assert(!contains(res, 0))
   }
 
   test("filter") {
