@@ -6,7 +6,8 @@ object Nth {
     else if (n == 0) list.head
     else nth(n - 1, list.tail)
 
-  val list = new Nil
+  val list = new Cons(1, new Nil)
+
   nth(2, list)
   nth(-1, list)
 
