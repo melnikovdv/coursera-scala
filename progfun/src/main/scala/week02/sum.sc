@@ -9,5 +9,4 @@ object exercise2 {
   }
 
   sum(x => x * x, 3, 5)
-
 }
