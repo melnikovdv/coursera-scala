@@ -7,6 +7,8 @@ import org.scalatest.junit.JUnitRunner
 
 import patmat.Huffman._
 
+import scala.collection.immutable
+
 @RunWith(classOf[JUnitRunner])
 class HuffmanSuite extends FunSuite {
   trait TestTrees {
@@ -28,6 +30,21 @@ class HuffmanSuite extends FunSuite {
 
   test("string2chars(\"hello, world\")") {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
+  }
+
+  test("times test") {
+    val test = "fsaasdbcbcbcc".toList
+    assert(times(test).length === 6)
+    assert(times(test)(0) === ('a', 2))
+    assert(times(test)(1) === ('b', 3))
+    assert(times(test)(2) === ('c', 4))
+    assert(times(test)(3) === ('d', 1))
+    assert(times(test)(4) === ('f', 1))
+    assert(times(test)(5) === ('s', 2))
+
+    assert(times("aaa".toList)(0) === ('a', 3))
+    assert(times("aaa".toList).length === 1)
+    assert(times(Nil) === Nil)
   }
 
   test("makeOrderedLeafList for some frequency table") {

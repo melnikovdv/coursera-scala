@@ -26,9 +26,15 @@ object Huffman {
 
   // Part 1: Basics
 
-  def weight(tree: CodeTree): Int = ??? // tree match ...
+  def weight(tree: CodeTree): Int = tree match { // tree match ...
+    case Leaf(_, w) => w
+    case Fork(l, r, _, _) => weight(l) + weight(r)
+  }
 
-  def chars(tree: CodeTree): List[Char] = ??? // tree match ...
+  def chars(tree: CodeTree): List[Char] = tree match { // tree match ...
+    case l: Leaf => l.char :: Nil
+    case f: Fork => chars(f.left) ++ chars(f.right)
+  }
 
   def makeCodeTree(left: CodeTree, right: CodeTree) =
     Fork(left, right, chars(left) ::: chars(right), weight(left) + weight(right))
@@ -71,7 +77,12 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-  def times(chars: List[Char]): List[(Char, Int)] = ???
+  def times(chars: List[Char]): List[(Char, Int)] = chars.sorted match {
+    case Nil => Nil
+    case x :: xs =>
+      val (dropped, rest) = xs.span(t => t == x)
+      List((x, dropped.length + 1)) ++ times(rest)
+  }
 
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
