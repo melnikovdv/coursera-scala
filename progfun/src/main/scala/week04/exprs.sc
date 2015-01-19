@@ -7,10 +7,11 @@ object exprs {
     case Prod(e1, e2) => show(e1) + " * " + show(e2)
   }
   show(Sum(Number(1), Number(44)))
-
   // should print as “2 * x + y”. But
   show(Sum(Prod(Number(2), Var("x")), Var("y")))
-
   // should print as "(2 + x) * y"
   show(Prod(Sum(Number(2), Var("x")), Var("y")))
+
+  List(1 :: 2)
+
 }
