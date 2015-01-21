@@ -34,13 +34,15 @@ class HuffmanSuite extends FunSuite {
 
   test("times test") {
     val test = "fsaasdbcbcbcc".toList
-    assert(times(test).length === 6)
-    assert(times(test)(0) === ('a', 2))
-    assert(times(test)(1) === ('b', 3))
-    assert(times(test)(2) === ('c', 4))
-    assert(times(test)(3) === ('d', 1))
-    assert(times(test)(4) === ('f', 1))
-    assert(times(test)(5) === ('s', 2))
+    val freqs: List[(Char, Int)] = times(test)
+    assert(freqs.length === 6)
+    assert(freqs(0) === ('a', 2))
+    assert(freqs(1) === ('b', 3))
+    assert(freqs(2) === ('c', 4))
+    assert(freqs(3) === ('d', 1))
+    assert(freqs(4) === ('f', 1))
+    assert(freqs(5) === ('s', 2))
+    println(freqs)
 
     assert(times("aaa".toList)(0) === ('a', 3))
     assert(times("aaa".toList).length === 1)
@@ -54,6 +56,10 @@ class HuffmanSuite extends FunSuite {
   test("combine of some leaf list") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
+  }
+
+  test("french tree decoding") {
+    assert(decodedSecret.mkString === "huffmanestcool")
   }
 
   test("decode and encode a very short text should be identity") {
