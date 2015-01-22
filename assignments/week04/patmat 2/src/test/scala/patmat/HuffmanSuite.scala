@@ -79,7 +79,6 @@ class HuffmanSuite extends FunSuite {
       assert(convT1(0) == ('a', List(0)))
       assert(convT1(1) == ('b', List(1)))
 
-//      val t2 = Fork(Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5), Leaf('d',4), List('a','b','d'), 9)
       println ("convert t2: " + convT2)
       assert(convT2.length === 3)
       assert(convT2(0) == ('a', List(0, 0)))
